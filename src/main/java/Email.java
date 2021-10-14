@@ -1,4 +1,4 @@
-package info3.parcial2;
+package main.java;
 
 /**
  * Clase con los datos de un email. Puede tener mas propiedades o metodos

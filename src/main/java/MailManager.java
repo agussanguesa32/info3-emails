@@ -1,4 +1,4 @@
-package info3.parcial2;
+package main.java;
 
 import java.util.Date;
 

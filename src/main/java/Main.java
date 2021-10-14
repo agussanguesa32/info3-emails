@@ -1,4 +1,4 @@
-package info3.parcial2;
+package main.java;
 
 public class Main {
 
@@ -6,4 +6,5 @@ public class Main {
 	// Implemetación
         System.out.println("Parcial 2");
     }
+
 }
