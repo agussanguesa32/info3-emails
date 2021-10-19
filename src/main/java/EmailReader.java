@@ -1,12 +1,13 @@
 package main.java;
 
 import java.io.*;
+import main.java.Date;
 
 public class EmailReader {
 
-    public static void main(String[] args) throws IOException {
+    public static void readEmail() throws IOException {
 
-        FileReader fr = new FileReader("src/emails/mails-20.txt");
+        FileReader fr = new FileReader("src/emails/mails-2.txt");
         BufferedReader br = new BufferedReader(fr);
         Email email = new Email();
 
@@ -17,20 +18,21 @@ public class EmailReader {
                     br.readLine();
                     break;
                 case 1:
-                    email.date = br.readLine().substring(6);
-                    System.out.println(email.date);
+                    String aux = br.readLine().substring(6,16);
+                    email.setDate(email.parceDate(aux));
+                    System.out.println(email.getDate());
                     break;
                 case 2:
-                    email.from = br.readLine().substring(6);
-                    System.out.println(email.from);
+                    email.setFrom(br.readLine().substring(6));
+                    System.out.println(email.getFrom());
                     break;
                 case 3:
-                    email.to = br.readLine().substring(4);
-                    System.out.println(email.to);
+                    email.setTo(br.readLine().substring(4));
+                    System.out.println(email.getTo());
                     break;
                 case 4:
-                    email.subject = br.readLine().substring(9);
-                    System.out.println(email.subject);
+                    email.setSubject(br.readLine().substring(9));
+                    System.out.println(email.getSubject());
                     break;
                 case 5:
                     String index;
@@ -38,15 +40,14 @@ public class EmailReader {
                         if(index.contains("-.-.-:-.-.-")){
                             break;
                         }
-                        email.content += index;
+                        email.addContent(index); ;
                     }
-                    email.content = email.content.substring(4);
-                    System.out.println("\n" + email.content);
+                    email.setContent(email.getContent().substring(4));
+                    System.out.println("\n" + email.getContent());
                     break;
             }
 
         }
-        //return email;
 
     }
 
