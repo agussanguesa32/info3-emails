@@ -13,6 +13,18 @@ class Email {
     private String subject; // Asunto del mail
     private String content; // Contenido del mail.
 
+    public Email(long id, String from, String to, Date date, String subject, String content) {
+        this.id = id;
+        this.from = from;
+        this.to = to;
+        this.date = date;
+        this.subject = subject;
+        this.content = content;
+    }
+    public Email(){
+
+    }
+
     public long getId() {
         return id;
     }
@@ -64,7 +76,7 @@ class Email {
         this.content += content;
     }
 
-    public Date parceDate(String aux){
+    public Date parseDate(String aux){
 
         Date date = new Date();
 
@@ -79,4 +91,15 @@ class Email {
         return date;
     }
 
+    @Override
+    public String toString() {
+        return "Email{" +
+                "id=" + id +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", date=" + date +
+                ", subject='" + subject + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

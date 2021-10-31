@@ -61,6 +61,10 @@ public class LinkedList<AnyType> {
             p.current.next = new ListNode<AnyType>(x, p.current.next);
     }
 
+    public void insert(AnyType x) {
+        this.insert(x, zeroth());
+    }
+
     /**
      * Return iterator corresponding to the first node containing an item.
      *
