@@ -7,7 +7,7 @@ public class EmailReader {
 
     public static void readEmail() throws IOException {
 
-        FileReader fr = new FileReader("src/emails/mails-2.txt");
+        FileReader fr = new FileReader("src/emails/mails-1000.txt");
         BufferedReader br = new BufferedReader(fr);
         Email email = new Email();
 
