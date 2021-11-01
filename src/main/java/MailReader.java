@@ -6,9 +6,9 @@ import main.java.structures.LinkedList;
 
 public class MailReader {
 
-    public static LinkedList<Email> emailParser(String route) throws IOException {
+    public static LinkedList<Email> emailParser(String route) throws Exception {
 
-        LinkedList<main.java.Email> emailLinkedList = new LinkedList<>();
+        LinkedList<Email> emailLinkedList = new LinkedList<>();
         FileReader fr = new FileReader(route);
         BufferedReader br = new BufferedReader(fr);
         Email email = new Email();
@@ -18,7 +18,7 @@ public class MailReader {
         do{
             temp = br.readLine();
             if (email.getContent()!=null) {
-                emailLinkedList.insert(email);
+                emailLinkedList.add(email);
                 bandera = false;
                 email.setContent(null);
 
@@ -48,7 +48,14 @@ public class MailReader {
 
 
         }while(temp!=null);
-        LinkedList.printList(emailLinkedList);
+        for (int i = 0; i < emailLinkedList.getSize(); i++) {
+            System.out.println(emailLinkedList.get(i).getId());
+            System.out.println(emailLinkedList.get(i).getDate());
+            System.out.println(emailLinkedList.get(i).getFrom());
+            System.out.println(emailLinkedList.get(i).getTo());
+            System.out.println(emailLinkedList.get(i).getSubject());
+            System.out.println(emailLinkedList.get(i).getContent());
+        }
 
         return emailLinkedList;
 

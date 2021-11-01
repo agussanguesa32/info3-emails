@@ -1,166 +1,121 @@
 package main.java.structures;
 
+import java.util.Iterator;
+import java.util.Optional;
 
-/**
- * Linked list implementation of the list
- * using a header node.
- * Access to the list is via LinkedListIterator.
- *
- * @author Mark Allen Weiss
- * @see LinkedListIterator
- */
 public class LinkedList<AnyType> {
-    private ListNode<AnyType> header;
+    private LinkedNode<AnyType> begin;
+    private int size;
 
-    /**
-     * Construct the list
-     */
     public LinkedList() {
-        header = new ListNode<AnyType>(null);
+        begin = null;
+        size = 0;
     }
 
     /**
-     * Test if the list is logically empty.
+     * Adds a node at the pos position
      *
-     * @return true if empty, false otherwise.
+     * @param d   the data
+     * @param pos the position
      */
-    public boolean isEmpty() {
-        return header.next == null;
-    }
 
-    /**
-     * Make the list logically empty.
-     */
-    public void makeEmpty() {
-        header.next = null;
-    }
-
-    /**
-     * Return an iterator representing the header node.
-     */
-    public LinkedListIterator<AnyType> zeroth() {
-        return new LinkedListIterator<AnyType>(header);
-    }
-
-    /**
-     * Return an iterator representing the first node in the list.
-     * This operation is valid for empty lists.
-     */
-    public LinkedListIterator<AnyType> first() {
-        return new LinkedListIterator<AnyType>(header.next);
-    }
-
-    /**
-     * Insert after p.
-     *
-     * @param x the item to insert.
-     * @param p the position prior to the newly inserted item.
-     */
-    public void insert(AnyType x, LinkedListIterator<AnyType> p) {
-        if (p != null && p.current != null)
-            p.current.next = new ListNode<AnyType>(x, p.current.next);
-    }
-
-    public void insert(AnyType x) {
-        this.insert(x, zeroth());
-    }
-
-    /**
-     * Return iterator corresponding to the first node containing an item.
-     *
-     * @param x the item to search for.
-     * @return an iterator; iterator is not valid if item is not found.
-     */
-    public LinkedListIterator<AnyType> find(AnyType x) {
-        ListNode<AnyType> itr = header.next;
-
-        while (itr != null && !itr.element.equals(x))
-            itr = itr.next;
-
-        return new LinkedListIterator<AnyType>(itr);
-    }
-
-    /**
-     * Return iterator prior to the first node containing an item.
-     *
-     * @param x the item to search for.
-     * @return appropriate iterator if the item is found. Otherwise, the
-     * iterator corresponding to the last element in the list is returned.
-     */
-    public LinkedListIterator<AnyType> findPrevious(AnyType x) {
-        ListNode<AnyType> itr = header;
-
-        while (itr.next != null && !itr.next.element.equals(x))
-            itr = itr.next;
-
-        return new LinkedListIterator<AnyType>(itr);
-    }
-
-    /**
-     * Remove the first occurrence of an item.
-     *
-     * @param x the item to remove.
-     */
-    public void remove(AnyType x) {
-        LinkedListIterator<AnyType> p = findPrevious(x);
-        remove(p);
-    }
-
-    public void remove(LinkedListIterator<AnyType> p) {
-        if (p.current.next != null)
-            p.current.next = p.current.next.next;  // Bypass deleted node
-    }
-
-    // Simple print method
-    public static <AnyType> void printList(LinkedList<AnyType> theList) {
-        if (theList.isEmpty())
-            System.out.print("Empty list");
-        else {
-            LinkedListIterator<AnyType> itr = theList.first();
-            for (; itr.isValid(); itr.advance())
-                System.out.print(itr.retrieve() + " ");
+    public void add(AnyType d, int pos) throws Exception {
+        LinkedNode<AnyType> aux;
+        if (pos == 0) {
+            begin = new LinkedNode<>(begin, d);
+        } else {
+            aux = getNode(pos - 1);
+            aux.next = new LinkedNode<>(aux.next, d);
         }
-
-        System.out.println();
+        size++;
     }
 
 
-    // In this routine, LinkedList and LinkedListIterator are the
-    // classes written in Section 17.2.
-    public static <AnyType> int listSize(LinkedList<AnyType> theList) {
-        LinkedListIterator<AnyType> itr;
-        int size = 0;
+    /**
+     * Add data at the begining
+     *
+     * @param d
+     */
+    public void add(AnyType d) throws Exception {
+        this.add(d, 0);
+    }
 
-        for (itr = theList.first(); itr.isValid(); itr.advance())
-            size++;
+    /**
+     * Get data from positon idx
+     *
+     * @param pos
+     * @return the data
+     */
+    public AnyType get(int pos) {
+        LinkedNode<AnyType> aux = getNode(pos);
+        return aux.data;
+    }
 
+    /**
+     * @param d
+     * @param pos
+     */
+    public void update(AnyType d, int pos) throws Exception {
+        LinkedNode<AnyType> aux = getNode(pos);
+        aux.data = d;
+    }
+
+    /**
+     * @param pos
+     */
+    public void delete(int pos) throws Exception {
+        if (pos == 0) {
+            if (begin == null)
+                throw new Exception("pos not found");
+            begin = begin.next;
+        } else {
+            LinkedNode<AnyType> aux = getNode(pos - 1);
+            if (aux.next == null)
+                throw new Exception("pos not found");
+
+            aux.next = aux.next.next;
+        }
+        size--;
+    }
+
+
+    /**
+     * @return
+     */
+    public int getSize() {
         return size;
     }
 
-    public static void main(String[] args) {
-        LinkedList<Integer> theList = new LinkedList<>();
-        LinkedListIterator<Integer> theItr;
-        int i;
-
-        theItr = theList.zeroth();
-        printList(theList);
-
-        for (i = 0; i < 10; i++) {
-            theList.insert(i, theItr);
-            printList(theList);
-            theItr.advance();
+    private LinkedNode<AnyType> getNode(int pos) {
+        LinkedNode<AnyType> aux = begin;
+        int p = 0;
+        while (p < pos && aux != null) {
+            p++;
+            aux = aux.next;
         }
-        System.out.println("Size was: " + listSize(theList));
-
-        for (i = 0; i < 10; i += 2)
-            theList.remove(i);
-
-        for (i = 0; i < 10; i++)
-            if ((i % 2 == 0) == (theList.find(i).isValid()))
-                System.out.println("Find fails!");
-
-        System.out.println("Finished deletions");
-        printList(theList);
+        if (aux == null) {
+            return null;
+        }
+        return aux;
     }
 
+
+    public void moverSiguiente(AnyType d) {
+        LinkedNode<AnyType> aux = begin;
+
+
+        while (aux.next != null && !aux.next.data.equals(d)) {
+            aux = aux.next;
+        }
+
+        LinkedNode<AnyType> ant = aux;
+        LinkedNode<AnyType> dato = aux.next;
+        LinkedNode<AnyType> sig = aux.next.next;
+
+        ant.next = sig;
+        if(sig != null) {
+            dato.next = sig.next;
+            sig.next = dato;
+        }
+    }
 }
