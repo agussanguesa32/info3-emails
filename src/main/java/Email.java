@@ -25,6 +25,10 @@ class Email {
 
     }
 
+    public Email clone(Email email){
+        return new Email(email.getId(), email.getFrom(), email.getTo(), email.getDate(), email.getSubject(), email.getContent());
+    }
+
     public long getId() {
         return id;
     }
@@ -59,6 +63,10 @@ class Email {
 
     public String getSubject() {
         return subject;
+    }
+
+    public void addSubject(String subject){
+        this.subject+=subject;
     }
 
     public void setSubject(String subject) {

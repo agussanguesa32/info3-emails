@@ -14,11 +14,14 @@ public class MailReader {
         Email email = new Email();
         String temp;
         Boolean bandera = false;
+        int j = 1;
 
         do{
             temp = br.readLine();
             if (email.getContent()!=null) {
-                emailLinkedList.add(email);
+                email.setId(j);
+                j++;
+                emailLinkedList.add(email.clone(email));
                 bandera = false;
                 email.setContent(null);
 
@@ -34,13 +37,17 @@ public class MailReader {
             } else if (temp.contains("subject: ")) {
                 email.setSubject(temp.substring(9));
             } else  {
-                while (!bandera && !temp.equals("-.-.-:-.-.-")) {
+                while (temp != null && !bandera && !temp.equals("-.-.-:-.-.-") ) {
                         email.addContent(temp);
+                        email.addContent("\n");
                         temp = br.readLine();
-                        if(temp.equals("-.-.-:-.-.-")){
-                            bandera =true;
-                            email.setContent(email.getContent().substring(4));
+                        if(temp != null){
+                            if(temp.contains("-.-.-:-.-.-")){
+                                bandera =true;
+                                email.setContent(email.getContent().substring(4));
+                            }
                         }
+
                     }
 
 
@@ -49,12 +56,7 @@ public class MailReader {
 
         }while(temp!=null);
         for (int i = 0; i < emailLinkedList.getSize(); i++) {
-            System.out.println(emailLinkedList.get(i).getId());
-            System.out.println(emailLinkedList.get(i).getDate());
-            System.out.println(emailLinkedList.get(i).getFrom());
-            System.out.println(emailLinkedList.get(i).getTo());
-            System.out.println(emailLinkedList.get(i).getSubject());
-            System.out.println(emailLinkedList.get(i).getContent());
+            System.out.println(emailLinkedList.get(i).toString());
         }
 
         return emailLinkedList;

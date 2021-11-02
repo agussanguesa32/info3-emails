@@ -37,7 +37,7 @@ public class LinkedList<AnyType> {
      * @param d
      */
     public void add(AnyType d) throws Exception {
-        this.add(d, 0);
+        this.add(d, this.size);
     }
 
     /**
