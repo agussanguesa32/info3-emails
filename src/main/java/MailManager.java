@@ -1,6 +1,8 @@
 package main.java;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 public class MailManager {
     /**
@@ -70,5 +72,35 @@ public class MailManager {
      */
     public Email[] getByQuery(String query) {
         return new Email[0];
+    }
+
+    public Email emailGenerator(){
+
+        DateTimeFormatter year = DateTimeFormatter.ofPattern("yyyy");
+        DateTimeFormatter month = DateTimeFormatter.ofPattern("MM");
+        DateTimeFormatter day = DateTimeFormatter.ofPattern("dd");
+        LocalDateTime now = LocalDateTime.now();
+        Scanner sc = new Scanner(System.in);
+        main.java.Date date = new Date();
+
+        Email email = new Email();
+        System.out.println("\nVamos a generar un email, por favor complete los datos a continuacion: \n");
+        email.setFrom("agussanguesa@gmail.com");
+
+        System.out.print("Ingrese el email del destinatario: ");
+        email.setTo(sc.nextLine());
+
+        //Seteamos fecha del mail
+        date.setDay(Integer.valueOf(day.format(now)));
+        date.setYear(Integer.valueOf(year.format(now)));
+        date.setMonth(Integer.valueOf(month.format(now)));
+        email.setDate(date);
+
+        System.out.print("Ingrese el asunto del mail: ");
+        email.setSubject(sc.nextLine());
+        System.out.print("Ingrese el contenido del mail: ");
+        email.setContent(sc.nextLine());
+        return email;
+
     }
 }
