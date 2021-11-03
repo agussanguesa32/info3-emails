@@ -8,9 +8,11 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+
+
         LinkedList<Email> emailList = new LinkedList<>();
-        emailList = MailReader.emailParser("src/emails/mails-2.txt");
-        MailManager manager = new MailManager();
+        emailList = MailReader.emailParser("src/emails/mails-1000.txt");
+        MailManager manager = new MailManager(emailList);
         Scanner sc = new Scanner(System.in);
         int opcion;
         boolean salir = false;
@@ -34,9 +36,14 @@ public class Main {
                     manager.addMail(manager.emailGenerator());
                     break;
                 case 2:
-                    int id = 0;
+                    int id;
+                    System.out.println("Ingrese el id que desea borrar: ");
+                    id = sc.nextInt();
                     manager.deleteMail(id);
+                    break;
                 case 3:
+
+                    break;
                 case 4:
                 case 5:
                 case 6:

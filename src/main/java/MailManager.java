@@ -1,17 +1,26 @@
 package main.java;
 
+import main.java.structures.LinkedList;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class MailManager {
+
+    private LinkedList<Email> auxList;
+
+    public MailManager(LinkedList<Email> aux){
+        this.auxList = aux;
+    }
+
     /**
      * Agrega un mail al gestor
      *
      * @param m mail a agregar
      */
-    public void addMail(Email m) {
-
+    public void addMail(Email m) throws Exception {
+        auxList.add(m);
     }
 
     /**
@@ -19,8 +28,8 @@ public class MailManager {
      *
      * @param id identificador del mail a borrar
      */
-    public void deleteMail(long id) {
-
+    public void deleteMail(long id) throws Exception {
+        auxList.delete((int) (id-1));
     }
 
     /**
@@ -103,4 +112,7 @@ public class MailManager {
         return email;
 
     }
+
+
+
 }
