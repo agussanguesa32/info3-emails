@@ -1,6 +1,6 @@
 package main.java;
 
-public class Date {
+public class Date implements Comparable<Date> {
     private int year;
     private int month;
 
@@ -34,5 +34,10 @@ public class Date {
     public String toString(){
 
         return (this.day + "/" + this.month + "/" + this.year);
+    }
+
+    @Override
+    public int compareTo(Date o) {
+        return 0;
     }
 }

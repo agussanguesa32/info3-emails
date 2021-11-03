@@ -1,6 +1,6 @@
 package main.java.structures;
 
-public class Node<K extends Comparable<K>, T> implements TreePrinter.PrintableNode {
+public class Node<K extends Comparable<K>, T> {
     private T data;
     private K key;
     private int height = 1;
@@ -52,27 +52,4 @@ public class Node<K extends Comparable<K>, T> implements TreePrinter.PrintableNo
         this.rightChild = rightChild;
     }
 
-    /**
-     * Get left child
-     */
-    @Override
-    public TreePrinter.PrintableNode getLeft() {
-        return getLeftChild();
-    }
-
-    /**
-     * Get right child
-     */
-    @Override
-    public TreePrinter.PrintableNode getRight() {
-        return getRightChild();
-    }
-
-    /**
-     * Get text to be printed
-     */
-    @Override
-    public String getText() {
-        return String.valueOf(this.key);
-    }
 }

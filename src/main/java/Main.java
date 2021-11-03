@@ -33,11 +33,13 @@ public class Main {
             opcion = sc.nextInt();
             switch (opcion) {
                 case 1:
+
                     manager.addMail(manager.emailGenerator());
                     break;
+
                 case 2:
                     int id;
-                    System.out.println("Ingrese el id que desea borrar: ");
+                    System.out.println("Ingrese el id del mail que desea borrar: ");
                     id = sc.nextInt();
                     manager.deleteMail(id);
                     break;

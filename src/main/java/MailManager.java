@@ -1,8 +1,7 @@
 package main.java;
 
-import main.java.structures.LinkedList;
-import main.java.structures.AvlTree;
-import main.java.structures.LinkedNode;
+import main.java.structures.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -10,10 +9,25 @@ import java.util.Scanner;
 public class MailManager {
 
     private LinkedList<Email> auxList;
-    private final AvlTree<String, Email> dateTree    = new AvlTree<>();
+
+    private final AvlTree<Long, Email> idTree = new AvlTree<>();
+    private final AvlTree<Date, Email> dateTree = new AvlTree<>();
+
 
     public MailManager(LinkedList<Email> aux){
         this.auxList = aux;
+        loadData();
+    }
+
+    public void loadData(){
+
+        for (int i = 0; i < auxList.getSize(); i++) {
+
+            dateTree.insert(auxList.get(i).getDate(), auxList.get(i));
+            idTree.insert(auxList.get(i).getId(), auxList.get(i));
+
+        }
+
     }
 
     /**
@@ -23,6 +37,8 @@ public class MailManager {
      */
     public void addMail(Email m) throws Exception {
         auxList.add(m);
+        dateTree.insert(m.getDate(), m);
+        idTree.insert(m.getId(), m);
     }
 
     /**
@@ -31,7 +47,11 @@ public class MailManager {
      * @param id identificador del mail a borrar
      */
     public void deleteMail(long id) throws Exception {
+        Email indexEmail = new Email();
+        indexEmail = idTree.get(id);
         auxList.delete((int) (id-1));
+        idTree.delete(id);
+        dateTree.delete(indexEmail.getDate());
     }
 
     /**
@@ -40,6 +60,8 @@ public class MailManager {
      * @return lista de mails ordenados
      */
     public Email[] getSortedByDate() {
+
+
         return new Email[0];
     }
 
@@ -85,6 +107,10 @@ public class MailManager {
         return new Email[0];
     }
 
+    /*public void printTree(AvlTree tree){
+        TreePrinter.print(tree.getRoot());
+    }*/
+
     public Email emailGenerator(){
 
         DateTimeFormatter year = DateTimeFormatter.ofPattern("yyyy");
@@ -113,6 +139,14 @@ public class MailManager {
         email.setContent(sc.nextLine());
         return email;
 
+    }
+
+    public AvlTree getDateTree(){
+        return dateTree;
+    }
+
+    public AvlTree getIdTree(){
+        return idTree;
     }
 
 
