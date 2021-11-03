@@ -47,8 +47,7 @@ public class MailManager {
      * @param id identificador del mail a borrar
      */
     public void deleteMail(long id) throws Exception {
-        Email indexEmail = new Email();
-        indexEmail = idTree.get(id);
+        Email indexEmail = idTree.get(id);
         auxList.delete((int) (id-1));
         idTree.delete(id);
         dateTree.delete(indexEmail.getDate());
@@ -128,9 +127,9 @@ public class MailManager {
         email.setTo(sc.nextLine());
 
         //Seteamos fecha del mail
-        date.setDay(Integer.valueOf(day.format(now)));
-        date.setYear(Integer.valueOf(year.format(now)));
-        date.setMonth(Integer.valueOf(month.format(now)));
+        date.setDay(Integer.parseInt(day.format(now)));
+        date.setYear(Integer.parseInt(year.format(now)));
+        date.setMonth(Integer.parseInt(month.format(now)));
         email.setDate(date);
 
         System.out.print("Ingrese el asunto del mail: ");
