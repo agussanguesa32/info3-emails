@@ -1,7 +1,8 @@
 package main.java;
 
 import main.java.structures.LinkedList;
-
+import main.java.structures.AvlTree;
+import main.java.structures.LinkedNode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 public class MailManager {
 
     private LinkedList<Email> auxList;
+    private final AvlTree<String, Email> dateTree    = new AvlTree<>();
 
     public MailManager(LinkedList<Email> aux){
         this.auxList = aux;
