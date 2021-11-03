@@ -1,74 +1,94 @@
 package main.java.structures;
 
-public class HashMap<K, T> {
-    private HashEntry<K, T>[] table;
-    private int size;
+import java.io.Serializable;
+import java.util.*;
 
-    public HashMap() {
-        table = new HashEntry[7];
-        size = 7;
+public class HashMap<K, V> {
+
+    private int capacity = 16; //Initial default capacity
+
+    private Entry<K, V>[] table; //Array of Entry object
+
+    public HashMap(){
+        table = new Entry[capacity];
     }
 
-    public HashMap(int size) {
-        table = new HashEntry[size];
-        this.size = size;
+    public HashMap(int capacity){
+        this.capacity = capacity;
+        table = new Entry[capacity];
     }
 
-    public void put(K key, T value) throws Exception {
-        int pos = inRange(key);
-        if (table[pos] != null)
-            throw new Exception("colition");
-
-        table[pos] = new HashEntry<>(key, value);
-    }
-
-    public T get(K key) throws Exception {
-        int pos = inRange(key);
-        if (table[pos] == null || table[pos].getKey() != key)
-            throw new Exception("not found");
-
-        return table[pos].getData();
-    }
-
-    public void remove(K key) throws Exception {
-        int pos = inRange(key);
-        if (table[pos] == null || table[pos].getKey() != key)
-            throw new Exception("not found");
-
-        table[pos] = null;
-    }
-
-    private int inRange(K key) {
-        return hashFunc(key) % size;
-    }
-
-    private int hashFunc(K key) {
-        Integer tmp = Integer.parseInt("" + key);
-        return (int) Math.pow(tmp, 3);
-    }
-
-    public static void main(String[] args) {
-        HashMap<Integer, String> miTabla = new HashMap<>(13);
-
-
-        try {
-            miTabla.put(3, "Hola");
-            miTabla.put(5, "Chau");
-            miTabla.put(10, "Coli");
-
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void put(K key, V value){
+        int index = index(key);
+        Entry newEntry = new Entry(key, value, null);
+        if(table[index] == null){
+            table[index] = newEntry;
+        }else {
+            Entry<K, V> previousNode = null;
+            Entry<K, V> currentNode = table[index];
+            while(currentNode != null){
+                if(currentNode.getKey().equals(key)){
+                    currentNode.setValue(value);
+                    break;
+                }
+                previousNode = currentNode;
+                currentNode = currentNode.getNext();
+            }
+            if(previousNode != null)
+                previousNode.setNext(newEntry);
         }
-
-        try {
-            System.out.println(miTabla.get(3));
-            System.out.println(miTabla.get(5));
-            System.out.println(miTabla.get(10));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
+    public V get(K key){
+        V value = null;
+        int index = index(key);
+        Entry<K, V> entry = table[index];
+        while (entry != null){
+            if(entry.getKey().equals(key)) {
+                value = entry.getValue();
+                break;
+            }
+            entry = entry.getNext();
+        }
+        return value;
+    }
+
+    public void remove(K key){
+        int index = index(key);
+        Entry previous = null;
+        Entry entry = table[index];
+        while (entry != null){
+            if(entry.getKey().equals(key)){
+                if(previous == null){
+                    entry = entry.getNext();
+                    table[index] = entry;
+                    return;
+                }else {
+                    previous.setNext(entry.getNext());
+                    return;
+                }
+            }
+            previous = entry;
+            entry = entry.getNext();
+        }
+    }
+
+    public void display(){
+        for(int i = 0; i < capacity; i++){
+            if(table[i] != null){
+                Entry<K, V> currentNode = table[i];
+                while (currentNode != null){
+                    System.out.println(String.format("Key is %s and value is %s", currentNode.getKey(), currentNode.getValue()));
+                    currentNode = currentNode.getNext();
+                }
+            }
+        }
+    }
+
+    private int index(K key){
+        if(key == null){
+            return 0;
+        }
+        return Math.abs(key.hashCode() % capacity);
+    }
 }
