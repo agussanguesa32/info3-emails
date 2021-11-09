@@ -15,11 +15,11 @@ public class Date implements Comparable<Date> {
     }
 
     public void setHour(int hour) {
-        this.year = year;
+        this.hour = hour;
     }
 
     public void setMinute(int minute) {
-        this.year = year;
+        this.minute = minute;
     }
 
     public int getMonth() {
@@ -51,7 +51,7 @@ public class Date implements Comparable<Date> {
 
     public String toString(){
 
-        return (this.day + "/" + this.month + "/" + this.year);
+        return (String.format("%02d", this.day) + "/" + String.format("%02d", this.month) + "/" + this.year + " " + String.format("%02d", this.hour) + ":" + String.format("%02d", this.minute));
     }
 
     @Override

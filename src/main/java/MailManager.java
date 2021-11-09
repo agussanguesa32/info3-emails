@@ -23,7 +23,6 @@ public class MailManager {
 
         for (int i = 0; i < auxList.getSize(); i++) {
 
-            System.out.println(auxList.get(i).getDate());
             dateTree.insert(auxList.get(i).getDate(), auxList.get(i));
             idTree.insert(auxList.get(i).getId(), auxList.get(i));
 
@@ -113,27 +112,35 @@ public class MailManager {
         DateTimeFormatter year = DateTimeFormatter.ofPattern("yyyy");
         DateTimeFormatter month = DateTimeFormatter.ofPattern("MM");
         DateTimeFormatter day = DateTimeFormatter.ofPattern("dd");
+        DateTimeFormatter hour = DateTimeFormatter.ofPattern("HH");
+        DateTimeFormatter minute = DateTimeFormatter.ofPattern("mm");
         LocalDateTime now = LocalDateTime.now();
         Scanner sc = new Scanner(System.in);
         main.java.Date date = new Date();
 
         Email email = new Email();
         System.out.println("\nVamos a generar un email, por favor complete los datos a continuacion: \n");
-        email.setFrom("agussanguesa@gmail.com");
+        email.setTo("librebase@grulic.org.ar");
 
-        System.out.print("Ingrese el email del destinatario: ");
-        email.setTo(sc.nextLine());
+        System.out.print("Ingrese el email del remitente: ");
+        email.setFrom(sc.nextLine());
 
         //Seteamos fecha del mail
         date.setDay(Integer.parseInt(day.format(now)));
         date.setYear(Integer.parseInt(year.format(now)));
         date.setMonth(Integer.parseInt(month.format(now)));
+        date.setHour(Integer.parseInt(hour.format(now)));
+        date.setMinute(Integer.parseInt(minute.format(now)));
         email.setDate(date);
 
         System.out.print("Ingrese el asunto del mail: ");
         email.setSubject(sc.nextLine());
         System.out.print("Ingrese el contenido del mail: ");
         email.setContent(sc.nextLine());
+
+        Long newId = auxList.get(auxList.getSize() - 1).getId() + 1; // Seteamos el ID del mail +1 al ultimo id
+        email.setId(newId);
+
         return email;
 
     }

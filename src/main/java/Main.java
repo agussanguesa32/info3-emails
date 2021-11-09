@@ -18,8 +18,8 @@ public class Main {
         boolean salir = false;
 
         do {
-            //manager.printDateTree();
-            //manager.printIdTree();
+            manager.printDateTree();
+            manager.printIdTree();
             System.out.println("Bienvenido!");
             System.out.print("Seleccione la opcion que desea realizar: \n" +
                     "1) Agregar Mail\n" +
@@ -40,7 +40,7 @@ public class Main {
 
                 case 2:
                     int id;
-                    System.out.println("Ingrese el id del mail que desea borrar: ");
+                    System.out.print("Ingrese el id del mail que desea borrar: ");
                     id = sc.nextInt();
                     manager.deleteMail(id);
                     break;
