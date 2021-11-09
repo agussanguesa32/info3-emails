@@ -91,10 +91,14 @@ class Email {
         int year = Integer.valueOf(aux.substring(0,4));
         int month = Integer.valueOf(aux.substring(5,7));
         int day = Integer.valueOf(aux.substring(8,10));
+        int hour = Integer.valueOf(aux.substring(11,13));
+        int minute = Integer.valueOf(aux.substring(14,16));
 
         date.setYear(year);
         date.setMonth(month);
         date.setDay(day);
+        date.setHour(hour);
+        date.setMinute(minute);
 
         return date;
     }

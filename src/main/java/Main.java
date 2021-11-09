@@ -17,8 +17,9 @@ public class Main {
         int opcion;
         boolean salir = false;
 
-
         do {
+            //manager.printDateTree();
+            //manager.printIdTree();
             System.out.println("Bienvenido!");
             System.out.print("Seleccione la opcion que desea realizar: \n" +
                     "1) Agregar Mail\n" +

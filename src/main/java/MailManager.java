@@ -23,6 +23,7 @@ public class MailManager {
 
         for (int i = 0; i < auxList.getSize(); i++) {
 
+            System.out.println(auxList.get(i).getDate());
             dateTree.insert(auxList.get(i).getDate(), auxList.get(i));
             idTree.insert(auxList.get(i).getId(), auxList.get(i));
 
@@ -106,9 +107,6 @@ public class MailManager {
         return new Email[0];
     }
 
-    /*public void printTree(AvlTree tree){
-        TreePrinter.print(tree.getRoot());
-    }*/
 
     public Email emailGenerator(){
 
@@ -148,6 +146,14 @@ public class MailManager {
         return idTree;
     }
 
+
+    public void printIdTree() {
+        idTree.print();
+    }
+
+    public void printDateTree() {
+        dateTree.print();
+    }
 
 
 }

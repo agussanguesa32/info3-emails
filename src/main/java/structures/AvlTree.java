@@ -173,15 +173,6 @@ public class AvlTree<K extends Comparable<K>, T> {
      * Internal method to print a subtree in sorted order.
      * @param t the node that roots the tree.
      */
-    private void printTree( Node<K, T> t )
-    {
-        if( t != null )
-        {
-            printTree( t.getLeftChild());
-            System.out.println( t.getKey() );
-            printTree( t.getRightChild() );
-        }
-    }
 
     public void print() {
         print(false, "", root);

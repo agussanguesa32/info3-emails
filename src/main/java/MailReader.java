@@ -57,10 +57,6 @@ public class MailReader {
 
         }while(temp!=null);
 
-
-        for(int i = 0; i < emailLinkedList.getSize(); i++){
-            System.out.println(emailLinkedList.get(i).toString());
-        }
         return emailLinkedList;
 
     }
