@@ -2,9 +2,9 @@ package main.java.structures;
 
 public class HashEntry<K, T>{
     private K key;
-    private T data;
+    private T[] data;
 
-    public HashEntry(K key, T data) {
+    public HashEntry(K key, T[] data) {
         this.key = key;
         this.data = data;
     }
@@ -13,7 +13,7 @@ public class HashEntry<K, T>{
         return key;
     }
 
-    public T getData() {
+    public T[] getData() {
         return data;
     }
 }

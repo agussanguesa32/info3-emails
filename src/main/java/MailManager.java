@@ -4,6 +4,8 @@ import main.java.structures.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class MailManager {
@@ -12,6 +14,7 @@ public class MailManager {
 
     private final AvlTree<Long, Email> idTree = new AvlTree<>();
     private final AvlTree<Date, Email> dateTree = new AvlTree<>();
+    private final AvlTree<String, Email> fromTree = new AvlTree<>();
 
 
     public MailManager(LinkedList<Email> aux){
@@ -25,6 +28,7 @@ public class MailManager {
 
             dateTree.insert(auxList.get(i).getDate(), auxList.get(i));
             idTree.insert(auxList.get(i).getId(), auxList.get(i));
+            fromTree.insert(auxList.get(i).getFrom(), auxList.get(i));
 
         }
 
@@ -59,21 +63,23 @@ public class MailManager {
      * @return lista de mails ordenados
      */
     public Email[] getSortedByDate() {
-
-
-        return new Email[0];
+        return getSortedByDate(Date.getMin(), Date.getMax());
     }
 
     /**
      * Devuelve una lista de mails oredenados por fecha que estan en el rango
      * desde - hasta
      *
-     * @param desde Fecha desde donde buscar
-     * @param hasta Fecha hasta donde buscar
+     * @param init Fecha desde donde buscar
+     * @param end Fecha hasta donde buscar
      * @return lista de mails ord-enados
      */
-    public Email[] getSortedByDate(String desde, String hasta) {
-        return new Email[0];
+    public Email[] getSortedByDate(Date init, Date end) {
+        Email[] array = new Email[dateTree.getSize()];
+        Queue<Email> emailQueue = dateTree.getIOQueue(init, end);
+        Object[] o = emailQueue.toArray();
+
+        return toArray(o, dateTree.getSize());
     }
 
     /**
@@ -149,6 +155,10 @@ public class MailManager {
         return dateTree;
     }
 
+    public AvlTree<String, Email> getFromTree() {
+        return fromTree;
+    }
+
     public AvlTree getIdTree(){
         return idTree;
     }
@@ -162,5 +172,15 @@ public class MailManager {
         dateTree.print();
     }
 
+    private Email[] toArray(Object[] o, int size) {
+        Email[] array = new Email[size];
+        for(int i = 0; i < o.length; i++){
+            array[i] = (Email) o[i];
+        }
+        return array;
+    }
+    private Email[] toArray(Object[] o){
+        return toArray(o, o.length);
+    }
 
 }

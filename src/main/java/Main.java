@@ -1,8 +1,11 @@
 package main.java;
 import main.java.structures.LinkedList;
+import main.java.structures.Node;
 
 import java.io.IOException;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 
 
 public class Main {
@@ -11,15 +14,13 @@ public class Main {
 
 
         LinkedList<Email> emailList = new LinkedList<>();
-        emailList = MailReader.emailParser("src/emails/mails-1000.txt");
+        emailList = MailReader.emailParser("src/emails/mails-20.txt");
         MailManager manager = new MailManager(emailList);
         Scanner sc = new Scanner(System.in);
         int opcion;
         boolean salir = false;
 
         do {
-            manager.printDateTree();
-            manager.printIdTree();
             System.out.println("Bienvenido!");
             System.out.print("Seleccione la opcion que desea realizar: \n" +
                     "1) Agregar Mail\n" +
@@ -34,7 +35,6 @@ public class Main {
             opcion = sc.nextInt();
             switch (opcion) {
                 case 1:
-
                     manager.addMail(manager.emailGenerator());
                     break;
 
@@ -45,10 +45,51 @@ public class Main {
                     manager.deleteMail(id);
                     break;
                 case 3:
-
+                    manager.getDateTree().print();
+                    System.out.println("Los mails en orden son: ");
+                      Email[] array = manager.getSortedByDate();
+                      for(int i = 0; i < array.length; i++){
+                          System.out.println(array[i].toString());
+                      }
                     break;
                 case 4:
+                    System.out.println("Ingrese la fecha inicial: (Formato: DDMMAAAA)");
+                    int aux = sc.nextInt();
+                    Date init = new Date();
+                    Date end =  new Date();
+                    try{
+                        init = Date.parseDate(aux);
+                    } catch (Exception e){
+                        System.out.println("Fecha invalida.");
+                        break;
+                    }
+                    System.out.println("Ingrese la fecha final: (Formato: DDMMAAAA)");
+                    aux = sc.nextInt();
+                    try{
+                        end = Date.parseDate(aux);
+                    } catch(Exception e){
+                        System.out.println("Fecha invalida.");
+                        break;
+                    }
+
+                    end.setHour(11);
+                    end.setHour(59);
+                    Email[] array2 = manager.getSortedByDate(init, end);
+                    System.out.println("Los mails en ese rango, ordenados por fechas son: ");
+                    for(int i = 0; i < array2.length; i++){
+                        if(array2[i] != null){
+                            System.out.println(array2[i].toString());
+                        } else {
+                            break;
+                        }
+                    }
+                    break;
+
                 case 5:
+                    System.out.println("Todos los mail ordenados por remitente: ");
+                    manager.getFromTree().print();
+                    break;
+
                 case 6:
                 case 7:
                 case 8:

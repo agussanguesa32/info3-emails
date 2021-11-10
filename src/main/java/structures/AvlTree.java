@@ -1,15 +1,25 @@
 package main.java.structures;
 
-import main.java.structures.LinkedList;
-import main.java.structures.LinkedNode;
+
+import main.java.Date;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
 
 public class AvlTree<K extends Comparable<K>, T> {
     private Node<K, T> root;
 
-    public AvlTree() {}
+
+    private int size;
+
+    public AvlTree() {
+        size = 0;
+    }
 
     public AvlTree<K, T> insert(K key, T data) {
         root = insert(key, data, root);
+        size++;
         return this;
     }
 
@@ -51,6 +61,7 @@ public class AvlTree<K extends Comparable<K>, T> {
 
     public void delete(K key) {
         root = delete(key, root);
+        size--;
     }
 
     private Node<K, T> delete(K key, Node<K, T> node) {
@@ -125,13 +136,14 @@ public class AvlTree<K extends Comparable<K>, T> {
         node.setHeight(maxHeight + 1);
     }
 
-    private int height (Node<K, T> node) {
+    private int height(Node<K, T> node) {
         return node != null ? node.getHeight() : 0;
     }
 
     public void traverse() {
         traverseInOrder(root);
     }
+
     private void traverseInOrder(Node<K, T> node) {
         if (node != null) {
             traverseInOrder(node.getLeftChild());
@@ -145,6 +157,7 @@ public class AvlTree<K extends Comparable<K>, T> {
         }
         return getMax(root);
     }
+
     private Node<K, T> getMax(Node<K, T> node) {
         if (node.getRightChild() != null) {
             return getMax(node.getRightChild());
@@ -158,6 +171,7 @@ public class AvlTree<K extends Comparable<K>, T> {
         }
         return getMin(root);
     }
+
     public Node<K, T> getMin(Node<K, T> node) {
         if (node.getLeftChild() != null) {
             return getMin(node.getLeftChild());
@@ -169,10 +183,7 @@ public class AvlTree<K extends Comparable<K>, T> {
         return false;
     }
 
-    /**
-     * Internal method to print a subtree in sorted order.
-     * @param t the node that roots the tree.
-     */
+
 
     public void print() {
         print(false, "", root);
@@ -192,6 +203,43 @@ public class AvlTree<K extends Comparable<K>, T> {
         System.out.println(r.getKey());
         if (r.getLeftChild() != null) {
             print(false, identation + (isRight ? "|    " : "     "), r.getLeftChild());
+        }
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public Queue<T> getIOQueue(K init, K end){
+
+        Queue<T> queue = new LinkedList<T>();
+
+        getIO(this.root, queue, init, end);
+
+        return queue;
+    }
+
+
+    private void getIO(Node<K, T> node, Queue<T> queue, K init, K end) {
+        if (node == null)
+            return;
+        if (node.getKey().compareTo(init) > 0){
+            getIO(node.getLeftChild(), queue, init, end);
+        }
+
+        if (node.getKey().compareTo(init) > 0 && node.getKey().compareTo(end) < 0){
+            try {
+                queue.add(node.getData());
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        if (node.getKey().compareTo(end) < 0){
+            getIO(node.getRightChild(), queue, init, end);
         }
     }
 }
