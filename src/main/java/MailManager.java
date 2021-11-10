@@ -4,6 +4,7 @@ import main.java.structures.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.Scanner;
@@ -108,9 +109,29 @@ public class MailManager {
      * @param query String con palabra/s a buscar
      * @return lista de mails que contienen dicha/s palabra/s
      */
-    public Email[] getByQuery(String query) {
-        return new Email[0];
+    public Email[] getByQuery(String query) throws Exception {
+
+        HashMap<String, LinkedList<Email>> hashMap = new HashMap<>();
+        String[] aux;
+        for(int i = 0; i < auxList.getSize(); i++){
+
+            aux = auxList.get(i).getContent().split(" ");
+
+            // Carga de el contenido en el HashMap
+            for(int j = 0; j < aux.length; j++){
+                try{
+                    hashMap.put(aux[j], new LinkedList<Email>());
+                    hashMap.get(aux[j]).add(auxList.get(i));
+                } catch (Exception e){
+                    hashMap.get(aux[j]).add(auxList.get(i));
+                }
+            }
+        }
+        Object[] o = hashMap.get(query).toArray();
+
+        return toArray(o, hashMap.get(query).getSize());
     }
+
 
 
     public Email emailGenerator(){

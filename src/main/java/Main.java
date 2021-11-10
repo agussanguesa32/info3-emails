@@ -1,5 +1,6 @@
 package main.java;
 import main.java.structures.LinkedList;
+
 import main.java.structures.Node;
 
 import java.io.IOException;
@@ -92,6 +93,10 @@ public class Main {
 
                 case 6:
                 case 7:
+                    Email[] a = manager.getByQuery("mbaldi");
+                    for(int i = 0; i < a.length; i++){
+                        System.out.println(a[i]);
+                    }
                 case 8:
                     salir = true;
                     break;
