@@ -15,7 +15,7 @@ public class Main {
 
 
         LinkedList<Email> emailList = new LinkedList<>();
-        emailList = MailReader.emailParser("src/emails/mails-20.txt");
+        emailList = MailReader.emailParser("src/emails/mails-1000.txt");
         MailManager manager = new MailManager(emailList);
         Scanner sc = new Scanner(System.in);
         int opcion;
@@ -55,29 +55,26 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("Ingrese la fecha inicial: (Formato: DDMMAAAA)");
-                    int aux = sc.nextInt();
                     Date init = new Date();
+                    init.setDay(sc.nextInt());
+                    init.setMonth(sc.nextInt());
+                    init.setYear(sc.nextInt());
                     Date end =  new Date();
-                    try{
-                        init = Date.parseDate(aux);
-                    } catch (Exception e){
-                        System.out.println("Fecha invalida.");
-                        break;
-                    }
                     System.out.println("Ingrese la fecha final: (Formato: DDMMAAAA)");
-                    aux = sc.nextInt();
-                    try{
-                        end = Date.parseDate(aux);
-                    } catch(Exception e){
-                        System.out.println("Fecha invalida.");
-                        break;
-                    }
+                    end.setDay(sc.nextInt());
+                    end.setMonth(sc.nextInt());
+                    end.setYear(sc.nextInt());
 
                     end.setHour(11);
                     end.setHour(59);
                     a = manager.getSortedByDate(init, end);
-                    System.out.println("Los mails en ese rango, ordenados por fechas son: ");
-                    Email.shortToString(a);
+                    if(a[0] != null){
+                        System.out.println("Los mails en ese rango, ordenados por fechas son: ");
+                        Email.shortToString(a);
+                    } else{
+                        System.out.println("No hay mails en ese rango de fechas.");
+                    }
+
                     break;
 
                 case 5:

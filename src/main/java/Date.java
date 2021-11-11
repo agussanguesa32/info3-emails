@@ -72,6 +72,12 @@ public class Date implements Comparable<Date> {
     }
 
     public static Date parseDate(String a){
+        String[] b = a.split(" ");
+        for(int i = 0; i < b.length; i++){
+            a+=b[i];
+        }
+
+
         if(a.length() <= 7){
             a = 0 + a;
         }

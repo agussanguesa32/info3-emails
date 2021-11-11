@@ -123,12 +123,12 @@ class Email {
 
             if (a[i] != null) {
                 System.out.println("\n**********");
-                System.out.println(a[i].getFrom() + ": ");
+                System.out.println(a[i].getDate() + ": ");
                 System.out.println("Id: " + a[i].getId());
                 System.out.println("To: " + a[i].getTo());
                 System.out.println("From: " + a[i].getFrom());
-                System.out.println("Date: " + a[i].getDate());
                 System.out.println("Subject: " + a[i].getSubject());
+                System.out.println("\n**********");
             }
         }
     }

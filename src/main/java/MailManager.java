@@ -29,7 +29,8 @@ public class MailManager {
 
     public void loadData() throws Exception {
 
-        String[] aux;
+        String[] aux, aux2, aux3;
+        String t;
         for (int i = 0; i < auxList.getSize(); i++) {
             //Armado del arbol por fechas
             dateTree.insert(auxList.get(i).getDate(), auxList.get(i));
@@ -47,15 +48,20 @@ public class MailManager {
 
             //Armado del hashMap para busqueda por query
 
-            aux = auxList.get(i).getContent().split(" ");   // Agregamos todo el contenido en un array de strings
+            aux3 = auxList.get(i).getContent().split(" ");// Agregamos todo el contenido en un array de strings
+            aux2 = auxList.get(i).getSubject().split(" ");
+            aux = new String[aux2.length+aux3.length];
+            System.arraycopy(aux3, 0, aux, 0, aux3.length);
+            System.arraycopy(aux2, 0, aux, aux3.length, aux2.length);
 
             for(int j = 0; j < aux.length; j++){
                 //Si la palabra no esta en la tabla como Key la creamos, si no solamente la agregamos a la lista enlazada
-                if(!aux[j].contains(" ") || !aux[j].contains("*") || !aux[j].contains("\"")){
-                    if(queryMap.get(aux[j]) == null){
-                        queryMap.put(aux[j], new LinkedList<>());
-                    } if(!queryMap.get(aux[j]).contains(auxList.get(i))){
-                        queryMap.get(aux[j]).add(auxList.get(i));
+                t = aux[j].trim().toLowerCase();
+                if(!t.contains(" ") || !t.contains("*") || !t.contains("\"")){
+                    if(queryMap.get(t) == null){
+                        queryMap.put(t, new LinkedList<>());
+                    } if(!queryMap.get(t).contains(auxList.get(i))){
+                        queryMap.get(t).add(auxList.get(i));
                     }
                 }
             }
