@@ -40,10 +40,10 @@ public class MailManager {
 
             //Armado del arbol por remitente
             try{
-                fromTree.get(auxList.get(i).getFrom()).add(auxList.get(i));
+                fromTree.get(auxList.get(i).getFrom().toLowerCase()).add(auxList.get(i));
             }catch (Exception e){
-                fromTree.insert(auxList.get(i).getFrom(), new LinkedList<>());
-                fromTree.get(auxList.get(i).getFrom()).add(auxList.get(i));
+                fromTree.insert(auxList.get(i).getFrom().toLowerCase(), new LinkedList<>());
+                fromTree.get(auxList.get(i).getFrom().toLowerCase()).add(auxList.get(i));
             }
 
             //Armado del hashMap para busqueda por query
@@ -60,7 +60,8 @@ public class MailManager {
                 if(!t.contains(" ") || !t.contains("*") || !t.contains("\"")){
                     if(queryMap.get(t) == null){
                         queryMap.put(t, new LinkedList<>());
-                    } if(!queryMap.get(t).contains(auxList.get(i))){
+                    }
+                    if(!queryMap.get(t).contains(auxList.get(i))){
                         queryMap.get(t).add(auxList.get(i));
                     }
                 }
@@ -131,7 +132,7 @@ public class MailManager {
      * @return lista de mails ord-enados
      */
     public Email[] getSortedByDate(Date init, Date end) {
-        LinkedList<Email> emailQueue = dateTree.getIOQueue(init, end);
+        LinkedList<Email> emailQueue = dateTree.getIOList(init, end);
         Object[] o = emailQueue.toArray();
 
         return toArray(o, dateTree.getSize());
@@ -143,8 +144,7 @@ public class MailManager {
      * @return lista de mails ordenados
      */
     public Email[] getSortedByFrom() throws Exception {
-        Email[] array = new Email[fromTree.getSize()];
-        LinkedList<LinkedList<Email>> emailQueue = fromTree.getIOQueue();
+        LinkedList<LinkedList<Email>> emailQueue = fromTree.getIOList();
         LinkedList<Email> emailList = new LinkedList<>();
         for(int i = 0; i < emailQueue.getSize(); i++){
             for(int j = 0; j < emailQueue.get(i).getSize(); j++){
@@ -165,7 +165,7 @@ public class MailManager {
      * @return lista de mails del remitente
      */
     public Email[] getByFrom(String from) {
-        if(fromTree.get(from) != null){
+        if(fromTree.get(from.toLowerCase()) != null){
             Object[] o = fromTree.get(from).toArray();
             return toArray(o);
         } else{

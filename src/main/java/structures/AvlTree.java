@@ -213,7 +213,7 @@ public class AvlTree<K extends Comparable<K>, T> {
         this.size = size;
     }
 
-    public LinkedList<T> getIOQueue(K init, K end){
+    public LinkedList<T> getIOList(K init, K end){
 
         LinkedList<T> list = new LinkedList<T>();
 
@@ -221,7 +221,7 @@ public class AvlTree<K extends Comparable<K>, T> {
 
         return list;
     }
-    public LinkedList<T> getIOQueue(){
+    public LinkedList<T> getIOList(){
 
         LinkedList<T> list = new LinkedList<T>();
 
@@ -229,36 +229,38 @@ public class AvlTree<K extends Comparable<K>, T> {
 
         return list;
     }
-    private void getIO(Node<K, T> node, LinkedList<T> queue) {
+    private void getIO(Node<K, T> node, LinkedList<T> list) {
         if (node == null)
             return;
-            getIO(node.getLeftChild(), queue);
+        
+        
+            getIO(node.getLeftChild(), list);
 
             try {
-                queue.add(node.getData());
+                list.add(node.getData());
             } catch (Exception e) {
                 System.out.println(e);
             }
-            getIO(node.getRightChild(), queue);
+            getIO(node.getRightChild(), list);
     }
 
 
-    private void getIO(Node<K, T> node, LinkedList<T> queue, K init, K end) {
+    private void getIO(Node<K, T> node, LinkedList<T> list, K init, K end) {
         if (node == null)
             return;
         if (node.getKey().compareTo(init) > 0){
-            getIO(node.getLeftChild(), queue, init, end);
+            getIO(node.getLeftChild(), list, init, end);
         }
 
         if (node.getKey().compareTo(init) > 0 && node.getKey().compareTo(end) < 0){
             try {
-                queue.add(node.getData());
+                list.add(node.getData());
             } catch (Exception e) {
                 System.out.println(e);
             }
         }
         if (node.getKey().compareTo(end) < 0){
-            getIO(node.getRightChild(), queue, init, end);
+            getIO(node.getRightChild(), list, init, end);
         }
     }
 }
