@@ -101,9 +101,9 @@ public class Date implements Comparable<Date> {
         } else if(hour < o.hour){
             bandera = -1;
         } else if(minute < o.minute){
-            bandera = 1;
-        } else if(minute > o.minute){
             bandera = -1;
+        } else if(minute > o.minute){
+            bandera = 1;
         }
         return bandera;
     }

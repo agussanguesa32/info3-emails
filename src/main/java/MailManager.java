@@ -172,9 +172,15 @@ public class MailManager {
 
     public Email[] getByQuery(String query) throws Exception {
 
-        Object[] o = queryMap.get(query).toArray();
 
-        return toArray(o, queryMap.get(query).getSize());
+        try{
+            Object[] o = queryMap.get(query).toArray();
+            return toArray(o, queryMap.get(query).getSize());
+        }catch(Exception e){
+            System.out.println("\nNo se ha encontrado la palabra deseada\n");
+        }
+
+        return new Email[0];
     }
 
 

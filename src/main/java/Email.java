@@ -122,11 +122,13 @@ class Email {
         for (int i = 0; i < a.length; i++) {
 
             if (a[i] != null) {
-                System.out.println("**********");
+                System.out.println("\n**********");
                 System.out.println(a[i].getFrom() + ": ");
-                System.out.println("id: " + a[i].getId());
-                System.out.println("to: " + a[i].getTo());
-                System.out.println("subject: " + a[i].getSubject());
+                System.out.println("Id: " + a[i].getId());
+                System.out.println("To: " + a[i].getTo());
+                System.out.println("From: " + a[i].getFrom());
+                System.out.println("Date: " + a[i].getDate());
+                System.out.println("Subject: " + a[i].getSubject());
             }
         }
     }

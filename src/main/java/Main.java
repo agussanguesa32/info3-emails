@@ -15,7 +15,7 @@ public class Main {
 
 
         LinkedList<Email> emailList = new LinkedList<>();
-        emailList = MailReader.emailParser("src/emails/mails-1000.txt");
+        emailList = MailReader.emailParser("src/emails/mails-20.txt");
         MailManager manager = new MailManager(emailList);
         Scanner sc = new Scanner(System.in);
         int opcion;
@@ -105,6 +105,7 @@ public class Main {
                         System.out.println("La palabra aparece en los siguientes mails: ");
                     }
                     Email.shortToString(a);
+                    break;
                 case 8:
                     salir = true;
                     break;
