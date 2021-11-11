@@ -4,9 +4,7 @@ import main.java.structures.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Objects;
-import java.util.Queue;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class MailManager {
@@ -15,25 +13,57 @@ public class MailManager {
 
     private final AvlTree<Long, Email> idTree = new AvlTree<>();
     private final AvlTree<Date, Email> dateTree = new AvlTree<>();
-    private final AvlTree<String, Email> fromTree = new AvlTree<>();
+    private final AvlTree<String, LinkedList<Email>> fromTree = new AvlTree<>();
+    private final HashMap<String, LinkedList<Email>> queryMap = new HashMap<>();
+
 
 
     public MailManager(LinkedList<Email> aux){
         this.auxList = aux;
-        loadData();
+        try{
+            loadData();
+        } catch (Exception e){
+            System.out.println(e);
+        }
     }
 
-    public void loadData(){
+    public void loadData() throws Exception {
 
+        String[] aux;
         for (int i = 0; i < auxList.getSize(); i++) {
-
+            //Armado del arbol por fechas
             dateTree.insert(auxList.get(i).getDate(), auxList.get(i));
+
+            //Armado del arbol por id
             idTree.insert(auxList.get(i).getId(), auxList.get(i));
-            fromTree.insert(auxList.get(i).getFrom(), auxList.get(i));
+
+            //Armado del arbol por remitente
+            try{
+                fromTree.get(auxList.get(i).getFrom()).add(auxList.get(i));
+            }catch (Exception e){
+                fromTree.insert(auxList.get(i).getFrom(), new LinkedList<>());
+                fromTree.get(auxList.get(i).getFrom()).add(auxList.get(i));
+            }
+
+            //Armado del hashMap para busqueda por query
+
+            aux = auxList.get(i).getContent().split(" ");   // Agregamos todo el contenido en un array de strings
+
+            for(int j = 0; j < aux.length; j++){
+                //Si la palabra no esta en la tabla como Key la creamos, si no solamente la agregamos a la lista enlazada
+                if(!aux[j].contains(" ") || !aux[j].contains("*") || !aux[j].contains("\"")){
+                    if(queryMap.get(aux[j]) == null){
+                        queryMap.put(aux[j], new LinkedList<>());
+                    } if(!queryMap.get(aux[j]).contains(auxList.get(i))){
+                        queryMap.get(aux[j]).add(auxList.get(i));
+                    }
+                }
+            }
 
         }
 
     }
+
 
     /**
      * Agrega un mail al gestor
@@ -44,6 +74,25 @@ public class MailManager {
         auxList.add(m);
         dateTree.insert(m.getDate(), m);
         idTree.insert(m.getId(), m);
+        try{
+            fromTree.get(m.getFrom()).add(m);
+        }catch (Exception e){
+            fromTree.insert(m.getFrom(), new LinkedList<>());
+            fromTree.get(m.getFrom()).add(m);
+        };
+        String[] aux = m.getContent().split(" ");   // Agregamos todo el contenido en un array de strings
+
+        for(int j = 0; j < aux.length; j++){
+            //Si la palabra no esta en la tabla como Key la creamos, si no solamente la agregamos a la lista enlazada
+            if(!aux[j].contains(" ") || !aux[j].contains("*") || !aux[j].contains("\"")){
+                if(queryMap.get(aux[j]) == null){
+                    queryMap.put(aux[j], new LinkedList<>());
+                } if(!queryMap.get(aux[j]).contains(m)){
+                    queryMap.get(aux[j]).add(m);
+                }
+            }
+        }
+
     }
 
     /**
@@ -76,8 +125,7 @@ public class MailManager {
      * @return lista de mails ord-enados
      */
     public Email[] getSortedByDate(Date init, Date end) {
-        Email[] array = new Email[dateTree.getSize()];
-        Queue<Email> emailQueue = dateTree.getIOQueue(init, end);
+        LinkedList<Email> emailQueue = dateTree.getIOQueue(init, end);
         Object[] o = emailQueue.toArray();
 
         return toArray(o, dateTree.getSize());
@@ -88,8 +136,20 @@ public class MailManager {
      *
      * @return lista de mails ordenados
      */
-    public Email[] getSortedByFrom() {
-        return new Email[0];
+    public Email[] getSortedByFrom() throws Exception {
+        Email[] array = new Email[fromTree.getSize()];
+        LinkedList<LinkedList<Email>> emailQueue = fromTree.getIOQueue();
+        LinkedList<Email> emailList = new LinkedList<>();
+        for(int i = 0; i < emailQueue.getSize(); i++){
+            for(int j = 0; j < emailQueue.get(i).getSize(); j++){
+                emailList.add(emailQueue.get(i).get(j));
+            }
+
+        }
+        Object[] o = emailList.toArray();
+
+        return toArray(o);
+
     }
 
     /**
@@ -99,37 +159,22 @@ public class MailManager {
      * @return lista de mails del remitente
      */
     public Email[] getByFrom(String from) {
-        return new Email[0];
+        if(fromTree.get(from) != null){
+            Object[] o = fromTree.get(from).toArray();
+            return toArray(o);
+        } else{
+            return new Email[0];
+        }
+
     }
 
-    /**
-     * Devuelve una lista de mails que contengan las palabras de 'query'
-     * en su asunto o en su contenido
-     *
-     * @param query String con palabra/s a buscar
-     * @return lista de mails que contienen dicha/s palabra/s
-     */
+
+
     public Email[] getByQuery(String query) throws Exception {
 
-        HashMap<String, LinkedList<Email>> hashMap = new HashMap<>();
-        String[] aux;
-        for(int i = 0; i < auxList.getSize(); i++){
+        Object[] o = queryMap.get(query).toArray();
 
-            aux = auxList.get(i).getContent().split(" ");
-
-            // Carga de el contenido en el HashMap
-            for(int j = 0; j < aux.length; j++){
-                try{
-                    hashMap.put(aux[j], new LinkedList<Email>());
-                    hashMap.get(aux[j]).add(auxList.get(i));
-                } catch (Exception e){
-                    hashMap.get(aux[j]).add(auxList.get(i));
-                }
-            }
-        }
-        Object[] o = hashMap.get(query).toArray();
-
-        return toArray(o, hashMap.get(query).getSize());
+        return toArray(o, queryMap.get(query).getSize());
     }
 
 
@@ -176,7 +221,7 @@ public class MailManager {
         return dateTree;
     }
 
-    public AvlTree<String, Email> getFromTree() {
+    public AvlTree<String, LinkedList<Email>> getFromTree() {
         return fromTree;
     }
 

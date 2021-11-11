@@ -113,9 +113,32 @@ public class LinkedList<AnyType> {
         LinkedNode<AnyType> sig = aux.next.next;
 
         ant.next = sig;
-        if(sig != null) {
+        if (sig != null) {
             dato.next = sig.next;
             sig.next = dato;
         }
+    }
+
+
+    public Object[] toArray() {
+        Object[] result = new Object[size];
+        int i = 0;
+        for (LinkedNode<AnyType> x = begin; x != null; x = x.next)
+            result[i++] = x.data;
+        return result;
+    }
+
+    public boolean contains(AnyType value) {
+        LinkedNode<AnyType> current = begin;
+
+        while (current != null) {
+            if (current.data.equals(value)) {
+                return true;
+            }
+
+            current = current.next;
+        }
+
+        return false;
     }
 }

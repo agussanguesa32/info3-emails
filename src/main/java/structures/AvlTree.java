@@ -3,8 +3,7 @@ package main.java.structures;
 
 import main.java.Date;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import main.java.structures.*;
 
 
 public class AvlTree<K extends Comparable<K>, T> {
@@ -214,17 +213,37 @@ public class AvlTree<K extends Comparable<K>, T> {
         this.size = size;
     }
 
-    public Queue<T> getIOQueue(K init, K end){
+    public LinkedList<T> getIOQueue(K init, K end){
 
-        Queue<T> queue = new LinkedList<T>();
+        LinkedList<T> list = new LinkedList<T>();
 
-        getIO(this.root, queue, init, end);
+        getIO(this.root, list, init, end);
 
-        return queue;
+        return list;
+    }
+    public LinkedList<T> getIOQueue(){
+
+        LinkedList<T> list = new LinkedList<T>();
+
+        getIO(this.root, list);
+
+        return list;
+    }
+    private void getIO(Node<K, T> node, LinkedList<T> queue) {
+        if (node == null)
+            return;
+            getIO(node.getLeftChild(), queue);
+
+            try {
+                queue.add(node.getData());
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            getIO(node.getRightChild(), queue);
     }
 
 
-    private void getIO(Node<K, T> node, Queue<T> queue, K init, K end) {
+    private void getIO(Node<K, T> node, LinkedList<T> queue, K init, K end) {
         if (node == null)
             return;
         if (node.getKey().compareTo(init) > 0){

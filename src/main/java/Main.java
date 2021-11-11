@@ -15,11 +15,13 @@ public class Main {
 
 
         LinkedList<Email> emailList = new LinkedList<>();
-        emailList = MailReader.emailParser("src/emails/mails-20.txt");
+        emailList = MailReader.emailParser("src/emails/mails-1000.txt");
         MailManager manager = new MailManager(emailList);
         Scanner sc = new Scanner(System.in);
         int opcion;
         boolean salir = false;
+        Email[] a;
+        String query;
 
         do {
             System.out.println("Bienvenido!");
@@ -48,10 +50,8 @@ public class Main {
                 case 3:
                     manager.getDateTree().print();
                     System.out.println("Los mails en orden son: ");
-                      Email[] array = manager.getSortedByDate();
-                      for(int i = 0; i < array.length; i++){
-                          System.out.println(array[i].toString());
-                      }
+                      a = manager.getSortedByDate();
+                      Email.shortToString(a);
                     break;
                 case 4:
                     System.out.println("Ingrese la fecha inicial: (Formato: DDMMAAAA)");
@@ -75,28 +75,36 @@ public class Main {
 
                     end.setHour(11);
                     end.setHour(59);
-                    Email[] array2 = manager.getSortedByDate(init, end);
+                    a = manager.getSortedByDate(init, end);
                     System.out.println("Los mails en ese rango, ordenados por fechas son: ");
-                    for(int i = 0; i < array2.length; i++){
-                        if(array2[i] != null){
-                            System.out.println(array2[i].toString());
-                        } else {
-                            break;
-                        }
-                    }
+                    Email.shortToString(a);
                     break;
 
                 case 5:
                     System.out.println("Todos los mail ordenados por remitente: ");
-                    manager.getFromTree().print();
+                    a = manager.getSortedByFrom();
+                    Email.shortToString(a);
+
                     break;
 
                 case 6:
-                case 7:
-                    Email[] a = manager.getByQuery("mbaldi");
+                    System.out.print("Buscar mails por remitente: ");
+                    query = sc.next();
+                    a = manager.getByFrom(query.toLowerCase());
                     for(int i = 0; i < a.length; i++){
-                        System.out.println(a[i]);
+                        System.out.println(a[i].getId());
                     }
+                    break;
+
+
+                case 7:
+                    System.out.print("Buscar mails por palabra: ");
+                    query = sc.next();
+                    a = manager.getByQuery(query.toLowerCase());
+                    if(a.length != 0){
+                        System.out.println("La palabra aparece en los siguientes mails: ");
+                    }
+                    Email.shortToString(a);
                 case 8:
                     salir = true;
                     break;
@@ -109,5 +117,7 @@ public class Main {
 
 
     }
+
+
 
 }

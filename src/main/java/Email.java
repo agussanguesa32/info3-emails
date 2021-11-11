@@ -21,11 +21,13 @@ class Email {
         this.subject = subject;
         this.content = content;
     }
-    public Email(){
+
+    public Email() {
 
     }
 
-    public Email clone(Email email){
+
+    public Email clone(Email email) {
         return new Email(email.getId(), email.getFrom(), email.getTo(), email.getDate(), email.getSubject(), email.getContent());
     }
 
@@ -65,8 +67,8 @@ class Email {
         return subject;
     }
 
-    public void addSubject(String subject){
-        this.subject+=subject;
+    public void addSubject(String subject) {
+        this.subject += subject;
     }
 
     public void setSubject(String subject) {
@@ -80,19 +82,20 @@ class Email {
     public void setContent(String content) {
         this.content = content;
     }
-    public void addContent(String content){
+
+    public void addContent(String content) {
         this.content += content;
     }
 
-    public Date parseDate(String aux){
+    public Date parseDate(String aux) {
 
         Date date = new Date();
 
-        int year = Integer.valueOf(aux.substring(0,4));
-        int month = Integer.valueOf(aux.substring(5,7));
-        int day = Integer.valueOf(aux.substring(8,10));
-        int hour = Integer.valueOf(aux.substring(11,13));
-        int minute = Integer.valueOf(aux.substring(14,16));
+        int year = Integer.valueOf(aux.substring(0, 4));
+        int month = Integer.valueOf(aux.substring(5, 7));
+        int day = Integer.valueOf(aux.substring(8, 10));
+        int hour = Integer.valueOf(aux.substring(11, 13));
+        int minute = Integer.valueOf(aux.substring(14, 16));
 
         date.setYear(year);
         date.setMonth(month);
@@ -113,5 +116,18 @@ class Email {
                 ", subject='" + subject + '\'' +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+    public static void shortToString(Email[] a) {
+        for (int i = 0; i < a.length; i++) {
+
+            if (a[i] != null) {
+                System.out.println("**********");
+                System.out.println(a[i].getFrom() + ": ");
+                System.out.println("id: " + a[i].getId());
+                System.out.println("to: " + a[i].getTo());
+                System.out.println("subject: " + a[i].getSubject());
+            }
+        }
     }
 }
